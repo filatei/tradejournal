@@ -15,6 +15,7 @@
       <p class="intro">A dated record of hypotheses, strategy tests, execution notes, and what changed my mind.</p>
       <nav aria-label="Primary navigation">
         <a href="#journal">Journal</a>
+        <a href="#workspace">Journal workspace</a>
         <a href="#research">Research</a>
         <a href="#method">Method</a>
         <a href="https://github.com/filatei/tradejournal">Source</a>
@@ -37,6 +38,64 @@
       </div>
       <div id="entries" class="entry-grid" aria-live="polite"></div>
       <p id="empty" hidden>No journal entries match that search.</p>
+    </section>
+
+    <section id="workspace" class="workspace">
+      <p class="eyebrow">Private browser workspace</p>
+      <h2>Add entry / Import history</h2>
+      <p class="workspace-intro">Draft entries and imported CSV data stay in this browser’s local storage. CSV files are parsed locally and are never uploaded by this static site. Export your data before clearing browser storage.</p>
+
+      <div class="workspace-grid">
+        <form id="entry-form" class="panel" autocomplete="off">
+          <div class="section-heading">
+            <div>
+              <h3>Manual journal entry</h3>
+              <p>Saved automatically as a local draft.</p>
+            </div>
+            <span id="entry-status" class="status" aria-live="polite"></span>
+          </div>
+          <div class="form-grid">
+            <label>Date <input name="date" type="date" required></label>
+            <label>Outcome <select name="outcome"><option value="">Select outcome</option><option>Win</option><option>Loss</option><option>Breakeven</option><option>In progress</option></select></label>
+            <label>Title <input name="title" required placeholder="What did you test or learn?"></label>
+            <label>Symbol <input name="symbol" placeholder="EURUSD, US500.cash"></label>
+            <label>Strategy <input name="strategy" placeholder="Breakout grid"></label>
+            <label>Tags <input name="tags" placeholder="breakout, review, risk"></label>
+          </div>
+          <label>Setup / notes <textarea name="notes" rows="4" placeholder="Context, execution and evidence"></textarea></label>
+          <label>Lessons <textarea name="lessons" rows="3" placeholder="What to repeat, avoid or test next"></textarea></label>
+          <div class="actions">
+            <button type="submit">Save entry locally</button>
+            <button type="button" class="secondary" id="clear-draft">Clear draft</button>
+            <button type="button" class="secondary" id="export-entries">Export entries JSON</button>
+          </div>
+          <p class="help">To publish an entry, copy it into <code>journal/YYYY-MM-DD-short-title.md</code>, add its summary to <code>journal/entries.json</code>, then commit and push yourself. This site cannot commit to GitHub.</p>
+        </form>
+
+        <div class="panel import-panel">
+          <h3>MT4 / MT5 Account History CSV</h3>
+          <p>Choose a comma-, tab-, or semicolon-separated export. Common headers are detected automatically; non-standard layouts may need header mapping.</p>
+          <label class="file-input">Choose CSV <input id="csv-file" type="file" accept=".csv,.txt,text/csv,text/plain"></label>
+          <p id="import-status" class="status" role="status">No file imported.</p>
+          <details>
+            <summary>Accepted history formats and limits</summary>
+            <p>MT4 closed order history and MT5 deal history are handled best-effort. Balance, credit and other non-trade rows are excluded. MT5 positions can contain multiple deals, so partial closes or broker-specific exports may require manual review.</p>
+          </details>
+          <div class="actions">
+            <button type="button" class="secondary" id="export-analysis" disabled>Export analysis JSON</button>
+            <a class="button secondary" href="journal/entry-template.md">Open repository entry template</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="analysis" hidden aria-live="polite">
+        <div class="section-heading"><div><h3>Imported trade analysis</h3><p id="analysis-caption"></p></div></div>
+        <div id="metrics" class="metrics"></div>
+        <div class="analysis-grid">
+          <article class="panel"><h4>By symbol</h4><div class="table-wrap"><table id="symbol-summary"></table></div></article>
+          <article class="panel"><h4>Recent closed trades</h4><div class="table-wrap"><table id="recent-trades"></table></div></article>
+        </div>
+      </div>
     </section>
 
     <section id="research" class="research">
