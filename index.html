@@ -15,7 +15,8 @@
       <p class="intro">A dated record of hypotheses, strategy tests, execution notes, and what changed my mind.</p>
       <nav aria-label="Primary navigation">
         <a href="#journal">Journal</a>
-        <a href="#workspace">Journal workspace</a>
+        <a class="button nav-cta" href="#entry-form">Add journal entry</a>
+        <a href="#workspace">Import CSV</a>
         <a href="#research">Research</a>
         <a href="#method">Method</a>
         <a href="https://github.com/filatei/tradejournal">Source</a>
@@ -34,7 +35,10 @@
           <p class="eyebrow">Daily record</p>
           <h2>Journal entries</h2>
         </div>
-        <label class="filter-label">Filter <input id="filter" type="search" placeholder="Strategy, symbol, tag"></label>
+        <div class="section-tools">
+          <a class="button" href="#entry-form">Add journal entry</a>
+          <label class="filter-label">Filter <input id="filter" type="search" placeholder="Strategy, symbol, tag"></label>
+        </div>
       </div>
       <div id="entries" class="entry-grid" aria-live="polite"></div>
       <p id="empty" hidden>No journal entries match that search.</p>
@@ -50,7 +54,7 @@
           <div class="section-heading">
             <div>
               <h3>Manual journal entry</h3>
-              <p>Saved automatically as a local draft.</p>
+              <p>Saved automatically as a local draft. Works even if published journal data fails to load.</p>
             </div>
             <span id="entry-status" class="status" aria-live="polite"></span>
           </div>
