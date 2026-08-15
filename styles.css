@@ -13,7 +13,8 @@ main { padding:2rem 0 4rem; } section { margin:3.5rem 0; }
 .section-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; }.section-heading h2 { margin-bottom:0; }
 .section-tools { display:flex; flex-wrap:wrap; align-items:end; gap:.85rem; }
 .filter-label { color:var(--muted); display:grid; gap:.25rem; font-size:.85rem; } input { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:.35rem; padding:.6rem .75rem; min-width:220px; }
-#entry-form:target { outline:2px solid var(--accent); outline-offset:4px; }
+#workspace:target,#entry-form:target { outline:2px solid var(--accent); outline-offset:8px; border-radius:.5rem; }
+nav .button { padding:.45rem .75rem; }
 .entry-grid,.research-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
 .entry,.research-grid article { border:1px solid var(--line); background:var(--card); padding:1.25rem; border-radius:.5rem; }
 .entry time { color:var(--muted); font-size:.85rem; }.entry h3 { margin:.4rem 0; line-height:1.25; }.entry p { color:var(--muted); }

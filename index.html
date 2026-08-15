@@ -44,60 +44,115 @@
       <p id="empty" hidden>No journal entries match that search.</p>
     </section>
 
-    <section id="workspace" class="workspace">
-      <p class="eyebrow">Private browser workspace</p>
-      <h2>Add entry / Import history</h2>
-      <p class="workspace-intro">Draft entries and imported CSV data stay in this browser’s local storage. CSV files are parsed locally and are never uploaded by this static site. Export your data before clearing browser storage.</p>
-
-      <div class="workspace-grid">
-        <form id="entry-form" class="panel" autocomplete="off">
-          <div class="section-heading">
-            <div>
-              <h3>Manual journal entry</h3>
-              <p>Saved automatically as a local draft. Works even if published journal data fails to load.</p>
-            </div>
-            <span id="entry-status" class="status" aria-live="polite"></span>
-          </div>
-          <div class="form-grid">
-            <label>Date <input name="date" type="date" required></label>
-            <label>Outcome <select name="outcome"><option value="">Select outcome</option><option>Win</option><option>Loss</option><option>Breakeven</option><option>In progress</option></select></label>
-            <label>Title <input name="title" required placeholder="What did you test or learn?"></label>
-            <label>Symbol <input name="symbol" placeholder="EURUSD, US500.cash"></label>
-            <label>Strategy <input name="strategy" placeholder="Breakout grid"></label>
-            <label>Tags <input name="tags" placeholder="breakout, review, risk"></label>
-          </div>
-          <label>Setup / notes <textarea name="notes" rows="4" placeholder="Context, execution and evidence"></textarea></label>
-          <label>Lessons <textarea name="lessons" rows="3" placeholder="What to repeat, avoid or test next"></textarea></label>
-          <div class="actions">
-            <button type="submit">Save entry locally</button>
-            <button type="button" class="secondary" id="clear-draft">Clear draft</button>
-            <button type="button" class="secondary" id="export-entries">Export entries JSON</button>
-          </div>
-          <p class="help">To publish an entry, copy it into <code>journal/YYYY-MM-DD-short-title.md</code>, add its summary to <code>journal/entries.json</code>, then commit and push yourself. This site cannot commit to GitHub.</p>
-        </form>
-
-        <div class="panel import-panel">
-          <h3>MT4 / MT5 Account History CSV</h3>
-          <p>Choose a comma-, tab-, or semicolon-separated export. Common headers are detected automatically; non-standard layouts may need header mapping.</p>
-          <label class="file-input">Choose CSV <input id="csv-file" type="file" accept=".csv,.txt,text/csv,text/plain"></label>
-          <p id="import-status" class="status" role="status">No file imported.</p>
-          <details>
-            <summary>Accepted history formats and limits</summary>
-            <p>MT4 closed order history and MT5 deal history are handled best-effort. Balance, credit and other non-trade rows are excluded. MT5 positions can contain multiple deals, so partial closes or broker-specific exports may require manual review.</p>
-          </details>
-          <div class="actions">
-            <button type="button" class="secondary" id="export-analysis" disabled>Export analysis JSON</button>
-            <a class="button secondary" href="journal/entry-template.md">Open repository entry template</a>
-          </div>
+    <section id="workspace" class="workspace" aria-label="Journal workspace">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Local tools</p>
+          <h2>Journal workspace</h2>
+        </div>
+        <div class="section-tools">
+          <a class="button" href="#entry-form">Add journal entry</a>
         </div>
       </div>
+      <p class="workspace-intro">
+        Add a manual journal draft or import MT4/MT5 Account History CSV for quick analysis.
+        This is a <strong>client-only</strong> static page: CSV files are parsed in your browser and are
+        <strong>not uploaded</strong> to GitHub Pages, a server, or any external service. Drafts and
+        saved entries stay in this browser’s <code>localStorage</code> until you export or clear them.
+        The site cannot commit to GitHub for you.
+      </p>
 
-      <div id="analysis" hidden aria-live="polite">
-        <div class="section-heading"><div><h3>Imported trade analysis</h3><p id="analysis-caption"></p></div></div>
+      <div class="workspace-grid">
+        <article class="panel">
+          <h3 id="entry-form-heading">Add journal entry</h3>
+          <p>Saved only in this browser. Export JSON when you want a backup, then promote useful notes into repository files yourself.</p>
+          <form id="entry-form" aria-labelledby="entry-form-heading">
+            <div class="form-grid">
+              <label>Date <input name="date" type="date" required></label>
+              <label>Outcome
+                <select name="outcome">
+                  <option value="">—</option>
+                  <option>win</option>
+                  <option>loss</option>
+                  <option>breakeven</option>
+                  <option>scratch</option>
+                  <option>observation</option>
+                </select>
+              </label>
+              <label>Title <input name="title" type="text" required placeholder="What was tested or observed"></label>
+              <label>Symbol <input name="symbol" type="text" placeholder="US100.cash"></label>
+              <label>Strategy <input name="strategy" type="text" placeholder="AGG_PENDING BOTH stops-only"></label>
+              <label>Tags <input name="tags" type="text" placeholder="comma,separated,tags"></label>
+            </div>
+            <label>Setup / notes <textarea name="notes" rows="4" placeholder="Setup, context, what you saw"></textarea></label>
+            <label>Lessons <textarea name="lessons" rows="3" placeholder="What to keep, change, or retest"></textarea></label>
+            <div class="actions">
+              <button type="submit">Save entry locally</button>
+              <button type="button" class="secondary" id="clear-draft">Clear draft</button>
+              <button type="button" class="secondary" id="export-entries">Export entries JSON</button>
+            </div>
+            <p id="entry-status" class="status" role="status" aria-live="polite"></p>
+            <div class="help">
+              <p><strong>Promote into the repository (manual):</strong></p>
+              <ol>
+                <li>Export JSON from this page (browser download only).</li>
+                <li>Copy <code>journal/entry-template.md</code> to <code>journal/YYYY-MM-DD-short-title.md</code> and paste the useful fields.</li>
+                <li>Add a summary object to <code>journal/entries.json</code>.</li>
+                <li>Commit and push from your machine. This page does not write to GitHub.</li>
+              </ol>
+            </div>
+          </form>
+        </article>
+
+        <article class="panel">
+          <h3>Import MT4 / MT5 history</h3>
+          <p>
+            Choose a local CSV/TSV export. Parsing happens only in this tab.
+            Supported reasonably: MT4 Account History order rows, and MT5 Deal history where several deal rows belong to one position (only closed / out-style P&amp;L rows are counted).
+            Balance, credit, deposit and withdrawal rows are ignored. Non-standard broker layouts may need different headers.
+          </p>
+          <div class="file-input">
+            <label>Account History CSV
+              <input id="csv-file" type="file" accept=".csv,.tsv,.txt,text/csv,text/tab-separated-values,text/plain">
+            </label>
+          </div>
+          <p id="import-status" class="status" role="status" aria-live="polite">No file imported.</p>
+          <div class="actions">
+            <a class="button secondary" href="samples/mt4-account-history-sample.csv" download>Sample MT4 CSV</a>
+            <a class="button secondary" href="samples/mt5-deal-history-sample.csv" download>Sample MT5 CSV</a>
+            <button type="button" class="secondary" id="export-analysis" disabled>Export analysis JSON</button>
+          </div>
+          <details>
+            <summary>Expected columns and honest limits</summary>
+            <p>
+              The importer looks for common headings such as Ticket/Order/Deal, Open Time, Close Time,
+              Symbol/Item, Type, Volume/Lots, Open/Close Price, Commission, Swap, Profit, and (for MT5) Entry.
+              Comma, tab, or semicolon separators are detected from the file. If your export uses unusual
+              labels, rename the header row to match those names or adapt the sample file.
+            </p>
+            <p>
+              Scope: this is a lightweight local summariser for closed-trade P&amp;L, not a full Tradezella
+              replacement. It does not reconcile open positions, partial fills across exotic report
+              formats, or broker-specific statement PDFs. Prefer Account History / Deal History CSV
+              with a header row.
+            </p>
+          </details>
+        </article>
+      </div>
+
+      <div id="analysis" class="panel" hidden>
+        <h3>Imported analysis</h3>
+        <p id="analysis-caption" class="workspace-intro"></p>
         <div id="metrics" class="metrics"></div>
         <div class="analysis-grid">
-          <article class="panel"><h4>By symbol</h4><div class="table-wrap"><table id="symbol-summary"></table></div></article>
-          <article class="panel"><h4>Recent closed trades</h4><div class="table-wrap"><table id="recent-trades"></table></div></article>
+          <div>
+            <h4>Per-symbol summary</h4>
+            <div class="table-wrap"><table id="symbol-summary"></table></div>
+          </div>
+          <div>
+            <h4>Recent trades</h4>
+            <div class="table-wrap"><table id="recent-trades"></table></div>
+          </div>
         </div>
       </div>
     </section>
@@ -138,7 +193,7 @@
   </main>
 
   <footer class="wrap">
-    <p>© <span id="year"></span> Trade Journal · Built as a static GitHub Pages site.</p>
+    <p>© <span id="year"></span> Trade Journal · Built as a static GitHub Pages site. Imports stay in your browser.</p>
   </footer>
   <script src="app.js"></script>
 </body>
