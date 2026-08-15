@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A public trading research journal.">
+  <title>Trade Journal — Research, Tests, Lessons</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="eyebrow">Independent trading research</p>
+      <h1>Trade Journal</h1>
+      <p class="intro">A dated record of hypotheses, strategy tests, execution notes, and what changed my mind.</p>
+      <nav aria-label="Primary navigation">
+        <a href="#journal">Journal</a>
+        <a href="#research">Research</a>
+        <a href="#method">Method</a>
+        <a href="https://github.com/filatei/tradejournal">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="notice" aria-label="Risk disclaimer">
+      <strong>Research journal, not investment advice.</strong> Historical tests can fail live. Every idea is logged with its assumptions and limitations.
+    </section>
+
+    <section id="journal">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Daily record</p>
+          <h2>Journal entries</h2>
+        </div>
+        <label class="filter-label">Filter <input id="filter" type="search" placeholder="Strategy, symbol, tag"></label>
+      </div>
+      <div id="entries" class="entry-grid" aria-live="polite"></div>
+      <p id="empty" hidden>No journal entries match that search.</p>
+    </section>
+
+    <section id="research" class="research">
+      <p class="eyebrow">Current experiment</p>
+      <h2>BOTH + Stops-only breakout grid</h2>
+      <div class="research-grid">
+        <article>
+          <h3>Configuration</h3>
+          <dl>
+            <div><dt>Direction</dt><dd>BOTH</dd></div>
+            <div><dt>Pending kind</dt><dd>STOPS ONLY</dd></div>
+            <div><dt>Reference behaviour</dt><dd>Buy stops above / sell stops below</dd></div>
+          </dl>
+        </article>
+        <article>
+          <h3>Hypothesis</h3>
+          <p>When price breaks and continues, only orders in the breakout direction trigger. The opposite-side stops remain pending unless price reverses through them.</p>
+        </article>
+        <article>
+          <h3>Critical limitation</h3>
+          <p>This is not permanently one-directional. A reversal can activate the previously idle opposite-side stops; exposure, drawdown and basket-exit rules determine whether that is acceptable.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="method" class="method">
+      <p class="eyebrow">How to read this site</p>
+      <h2>Research discipline</h2>
+      <ol>
+        <li>State the hypothesis before testing.</li>
+        <li>Record the symbol, period, settings and data source.</li>
+        <li>Separate observations from conclusions.</li>
+        <li>Validate promising variants in MT5 with the exact broker specification.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>© <span id="year"></span> Trade Journal · Built as a static GitHub Pages site.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[
+  {
+    "date": "2026-08-15",
+    "title": "BOTH + stops-only: breakout-directional, not direction-locked",
+    "summary": "In BOTH mode, buy stops sit above the reference and sell stops below it. A one-way move activates only its matching side, but a reversal can still trigger the opposite side.",
+    "tags": ["AGG_PENDING", "BOTH", "PEND_STOPS_ONLY", "hypothesis"],
+    "path": "journal/2026-08-15-both-stops-only.md"
+  }
+]
